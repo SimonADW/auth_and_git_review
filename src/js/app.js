@@ -16,7 +16,7 @@ const signUpButton = document.querySelector(".sign-up-button");
 const errorMessage = document.querySelector(".error-message");
 
 const frontPage = document.querySelector(".front-page");
-const secretSection = document.querySelector("secret-section");
+const secretSection = document.querySelector(".secret-section");
 
 
 signUpButton.addEventListener("click", (event)=> {
