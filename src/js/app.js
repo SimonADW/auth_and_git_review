@@ -21,9 +21,9 @@ const secretSection = document.querySelector("secret-section");
 
 signUpButton.addEventListener("click", (event)=> {
 	event.preventDefault();
-	createUserWithEmailAndPassword(authService, emailInput.ariaValueMax, passwordInput.value)
+	createUserWithEmailAndPassword(authService, emailInput.value, passwordInput.value)
 	.then(()=> {
-		// Do someting
+		checkAuthStateAndRender();
 	})
 	.catch((error)=> {
 		errorMessage.style.display = "block";
@@ -33,8 +33,40 @@ signUpButton.addEventListener("click", (event)=> {
 
 signInButton.addEventListener("click", (event)=> {
 	event.preventDefault();
+	signInWithEmailAndPassword(authService, emailInput.value, passwordInput.value)
+	.then(()=> {
+		checkAuthStateAndRender();
+	})
+	.catch((error)=> {
+		errorMessage.style.display = "block";
+		errorMessage.textContent = error.message
+	})
 })
 
 signOutButton.addEventListener("click", ()=> {
-
+	signOut(authService)
+	.then(()=> {
+		checkAuthStateAndRender();
+		console.log("Signed out ✔︎");
+	})
+	.catch((error)=> {
+		console.log(error.message);
+	})
 })
+
+function checkAuthStateAndRender() {
+	onAuthStateChanged(authService, (user)=> {
+		if(user) {
+			errorMessage.textContent = ""
+			frontPage.style.display = "none";
+			secretSection.style.display = "block";
+			signOutButton.style.display = "block";
+		} else {
+			frontPage.style.display = "block";
+			secretSection.style.display = "none";
+			signOutButton.style.display = "none";
+		}
+	})
+}
+
+checkAuthStateAndRender()
